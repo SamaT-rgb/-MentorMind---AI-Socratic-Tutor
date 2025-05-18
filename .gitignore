@@ -1,0 +1,6 @@
+.env
+myenv
+app_gradio.py
+desktop.ini
+requirements.txt
+run_ui.py
