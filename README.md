@@ -1,37 +1,42 @@
-﻿# MentorMind 🧠 — Your AI Socratic Learning Companion
+# MentorMind 🧠 — AI Socratic Tutor
 
-**MentorMind** is an intelligent, interactive tutoring platform that redefines learning through the **power of Socratic questioning**. Built using cutting-edge AI (GPT-4), it doesn't just give answers — it helps learners **discover them**, one thoughtful question at a time.
-
-> “The greatest teacher is not the one who provides the answers — but the one who asks the right questions.”
+MentorMind is an interactive AI-powered tutor that guides learners through reflective thinking using Socratic-style questioning. Built with Streamlit and Gemini 2.0, it helps users understand concepts through engaging conversations instead of just answers.
 
 ---
 
-## 🌟 Why MentorMind?
+## 🌐 Video Demo
 
-🔍 Do you struggle with memorizing complex topics?  
-🤯 Need more than just video lectures or textbook answers?  
-🎯 Want a tutor that adapts to your thinking and pushes you to reflect?
-
-**MentorMind** is your AI-powered Socratic tutor designed to **engage, challenge, and guide** you — just like a real mentor would.
+📽️ [Watch Demo Video]([https://youtube.com/your-demo](https://drive.google.com/file/d/1NPsYcbIDUAdt_zL6PhbXIBJugoTuS6wE/view?usp=drive_link)) 
 
 ---
 
-## 🚀 Core Features
+## 🚀 Features
 
-### 🧠 Socratic & Semi-Socratic Dialogue  
-- Engages you with thoughtful questions instead of spoon-feeding answers  
-- Provides hints and partial explanations when you're stuck  
-- Simulates a real mentorship experience
+- 🤖 AI-powered Socratic dialogue using Gemini 2.0  
+- 💬 Real-time interactive chat with thoughtful question prompts  
+- 🧠 Promotes critical thinking over direct answers  
+- 🔄 Dynamic session types: concept exploration, problem walkthroughs  
+- 📚 Recommends helpful resources (via LangChain)  
+- ⚡ Fast and intuitive interface powered by Streamlit  
 
-### 🧩 Interactive & Personalized Learning  
-- Adaptive sessions tailored to your understanding  
-- Real-time feedback and deep-dive follow-ups  
-- Encourages exploration, reflection, and reattempts
+---
 
-### 📚 Smart Resource Integration  
-- Recommends helpful videos, articles, or exercises  
-- Embeds learning materials right inside the chat
+## 🛠 Tech Stack Overview
 
-### 🔄 Continuous Progress Tracking  
-- Monitors your inputs to adjust question complexity  
-- Builds a dynamic learning path just for you
+| Layer        | Technology Used                          |
+|--------------|-------------------------------------------|
+| Interface    | 🖥️ [Streamlit](https://streamlit.io/) – for building the interactive web app |
+| Core Logic   | 🐍 Python – main language for scripting and orchestration |
+| AI Engine    | 🧠 Gemini 2.0 – for Socratic dialogue and AI responses |
+| Libraries    | 📦 Pandas, Streamlit Chat UI, LangChain – for data handling, chat logic, and prompt management |
+
+---
+
+## ⚙️ Installation & Setup
+
+Follow these steps to run MentorMind locally:
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/SamaT-rgb/-MentorMind---AI-Socratic-Tutor.git
+   cd -MentorMind---AI-Socratic-Tutor
