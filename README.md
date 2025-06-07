@@ -6,7 +6,7 @@ MentorMind is an interactive AI-powered tutor that guides learners through refle
 
 ## 🌐 Video Demo
 
-📽️ [Watch Demo Video]([https://youtube.com/your-demo](https://drive.google.com/file/d/1NPsYcbIDUAdt_zL6PhbXIBJugoTuS6wE/view?usp=drive_link)) 
+📽️ [Watch Demo Video]((https://drive.google.com/file/d/1NPsYcbIDUAdt_zL6PhbXIBJugoTuS6wE/view?usp=drive_link)) 
 
 ---
 
