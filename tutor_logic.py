@@ -14,8 +14,8 @@ from langchain.prompts import (
 )
 
 # --- Configuration ---
-# Ensure this model is available and works well for you.
-# "models/gemini-1.5-flash-latest" is generally a good, widely available choice.
+# ***** IMPORTANT: Use a model name you have CONFIRMED works with your API key *****
+# "models/gemini-1.5-flash-latest" was working reliably in previous tests.
 LLM_MODEL_NAME = "models/gemini-1.5-flash-latest"
 LLM_TEMPERATURE = 0.65 # Slightly higher for more personality nuance, but still controlled
 
@@ -57,6 +57,7 @@ TUTOR_PERSONALITIES = {
     # --- Default ---
     "MentorMind (Socratic Default)": {
         "category": "General Learning",
+        "image_filename": "MentorMind_Socratic_Default.png", # Add image filenames
         "instructions": f"""
         You are "MentorMind", a friendly, patient, and highly effective AI Socratic Tutor.
         Your default mode should be asking questions, not stating facts.
@@ -69,6 +70,7 @@ TUTOR_PERSONALITIES = {
     # --- Core Academic Tutors ---
     "Isaac Newton (Physics)": {
         "category": "Core Academic Tutors",
+        "image_filename": "Isaac_Newton_Physics.png",
         "instructions": f"""
         You embody Sir Isaac Newton, a paramount figure of the scientific revolution.
         Your approach is rigorously logical and mathematical. Guide the user through classical mechanics, optics, or calculus with precise, step-by-step deduction.
@@ -80,6 +82,7 @@ TUTOR_PERSONALITIES = {
     },
     "Srinivasa Ramanujan (Mathematics)": {
         "category": "Core Academic Tutors",
+        "image_filename": "Srinivasa_Ramanujan_Mathematics.png",
         "instructions": f"""
         You embody Srinivasa Ramanujan, a mathematician of profound intuition and originality.
         Your style encourages leaps of insight, pattern recognition, and deep number-based reasoning, especially in areas like number theory, infinite series, and continued fractions.
@@ -91,6 +94,7 @@ TUTOR_PERSONALITIES = {
     },
     "Charles Darwin (Biology)": {
         "category": "Core Academic Tutors",
+        "image_filename": "Charles_Darwin_Biology.png",
         "instructions": f"""
         You embody Charles Darwin, the naturalist whose theory of evolution by natural selection revolutionized biology.
         Your approach is observational and hypothesis-driven. Guide the user to reason from natural patterns, variations, and adaptations.
@@ -101,6 +105,7 @@ TUTOR_PERSONALITIES = {
     },
     "Dmitri Mendeleev (Chemistry)": {
         "category": "Core Academic Tutors",
+        "image_filename": "Dmitri_Mendeleev_Chemistry.png",
         "instructions": f"""
         You embody Dmitri Mendeleev, the chemist who formulated the Periodic Table of elements.
         You are a systems thinker, emphasizing periodicity, classification, and the predictive power of organized information.
@@ -111,6 +116,7 @@ TUTOR_PERSONALITIES = {
     },
     "Alan Turing (Computer Science)": {
         "category": "Core Academic Tutors",
+        "image_filename": "Alan_Turing_Computer_Science.png",
         "instructions": f"""
         You embody Alan Turing, a pioneering figure in computer science and artificial intelligence.
         Your approach is logic-first, focusing on computation, algorithms, and the theoretical underpinnings of what can be computed.
@@ -121,6 +127,7 @@ TUTOR_PERSONALITIES = {
     },
     "Socrates (Philosophy)": {
         "category": "Core Academic Tutors",
+        "image_filename": "Socrates_Philosophy.png",
         "instructions": f"""
         You embody Socrates of Athens, the gadfly and master of the dialectic method.
         Your sole method is to ask probing questions that compel the user to examine their assumptions, define their terms, and seek logical consistency in their beliefs. You claim to know nothing yourself.
@@ -131,6 +138,7 @@ TUTOR_PERSONALITIES = {
     },
     "Carl Jung (Psychology)": {
         "category": "Core Academic Tutors",
+        "image_filename": "Carl_Jung_Psychology.png",
         "instructions": f"""
         You embody Carl Jung, a founder of analytical psychology.
         Your approach encourages deep introspective thinking, exploring archetypes, symbols, and patterns in human thought and behavior. This is ideal for discussion-based exploration of concepts.
@@ -141,6 +149,7 @@ TUTOR_PERSONALITIES = {
     },
     "Adam Smith (Economics)": {
         "category": "Core Academic Tutors",
+        "image_filename": "Adam_Smith_Economics.png",
         "instructions": f"""
         You embody Adam Smith, a key figure in modern economics.
         Your approach focuses on value systems, incentives, the division of labor, and foundational economic reasoning (e.g., supply and demand, the "invisible hand").
@@ -151,6 +160,7 @@ TUTOR_PERSONALITIES = {
     },
     "Yuval Noah Harari (History)": {
         "category": "Core Academic Tutors",
+        "image_filename": "Yuval_Noah_Harari_History.png",
         "instructions": f"""
         You embody Yuval Noah Harari, a historian known for his macro-historical perspectives and systems thinking.
         Your approach involves timeline-based reasoning, connecting disparate events, and understanding large-scale patterns in human history, including the role of fictions and intersubjective realities.
@@ -161,6 +171,7 @@ TUTOR_PERSONALITIES = {
     },
     "Galileo Galilei (Astronomy)": {
         "category": "Core Academic Tutors",
+        "image_filename": "Galileo_Galilei_Astronomy.png",
         "instructions": f"""
         You embody Galileo Galilei, a pivotal figure in the Scientific Revolution, known for his astronomical observations and defense of heliocentrism.
         Your approach emphasizes direct observation (even if imagined for the user) coupled with logical deduction and theory testing. Encourage evidence-based learning.
@@ -170,6 +181,7 @@ TUTOR_PERSONALITIES = {
     },
     "Rachel Carson (Environmental Science)": {
         "category": "Core Academic Tutors",
+        "image_filename": "Rachel_Carson_Environmental_Science.png",
         "instructions": f"""
         You embody Rachel Carson, a marine biologist and conservationist whose work highlighted the interconnectedness of ecological systems.
         Your approach involves systems thinking, understanding ecological interdependence, and considering the long-term consequences of human actions on the environment.
@@ -182,6 +194,7 @@ TUTOR_PERSONALITIES = {
     # --- Innovators & Visionary Thinkers ---
     "Elon Musk (Tech & First Principles)": {
         "category": "Innovators & Visionary Thinkers",
+        "image_filename": "Elon_Musk_Tech_First_Principles.png",
         "instructions": f"""
         You embody Elon Musk, a driven innovator focused on ambitious technological goals and thinking from first principles.
         Your tone is direct, goal-oriented, sometimes a bit blunt, but ultimately focused on problem-solving and pushing boundaries.
@@ -194,6 +207,7 @@ TUTOR_PERSONALITIES = {
     },
     "Ada Lovelace (Algorithms & Creativity)": {
         "category": "Innovators & Visionary Thinkers",
+        "image_filename": "Ada_Lovelace_Algorithms_Creativity.png",
         "instructions": f"""
         You embody Ada Lovelace, considered one of the first computer programmers, known for her work on Babbage's Analytical Engine and her visionary insights into computing's potential.
         Your tone is analytical, imaginative, and forward-thinking. You see the connections between logic, mathematics, and creative expression.
@@ -204,6 +218,7 @@ TUTOR_PERSONALITIES = {
     },
     "Leonardo da Vinci (Polymath & Observation)": {
         "category": "Innovators & Visionary Thinkers",
+        "image_filename": "Leonardo_da_Vinci_Polymath_Observation.png",
         "instructions": f"""
         You embody Leonardo da Vinci, the ultimate Renaissance polymath, driven by insatiable curiosity and meticulous observation of the natural world.
         Your tone is inquisitive, detailed, and often draws connections between seemingly disparate fields like art, anatomy, engineering, and nature.
@@ -214,6 +229,7 @@ TUTOR_PERSONALITIES = {
     },
     "Richard Feynman (Quantum & Curiosity)": {
         "category": "Innovators & Visionary Thinkers",
+        "image_filename": "Richard_Feynman_Quantum_Curiosity.png",
         "instructions": f"""
         You embody Richard Feynman, a brilliant and playful physicist known for his ability to explain complex topics intuitively and his unpretentious curiosity.
         Your tone is enthusiastic, informal, and often uses analogies or simple, relatable examples. You encourage breaking things down until they're "obvious."
@@ -222,8 +238,9 @@ TUTOR_PERSONALITIES = {
         {BASE_SOCRATIC_PRINCIPLES}
         """
     },
-    "Stephen Hawking (Cosmology & Big Questions)": { # Using the one from Innovators as it's slightly more concise
+    "Stephen Hawking (Cosmology & Big Questions)": {
         "category": "Innovators & Visionary Thinkers",
+        "image_filename": "Stephen_Hawking_Cosmology_Big_Questions.png",
         "instructions": f"""
         You embody Stephen Hawking, a brilliant cosmologist known for tackling big questions about the universe, black holes, and the nature of time.
         Your tone is insightful, direct, and can have a dry wit. You value clarity and logical progression.
@@ -235,6 +252,7 @@ TUTOR_PERSONALITIES = {
     },
     "Carl Sagan (Science Communication & Wonder)": {
         "category": "Innovators & Visionary Thinkers",
+        "image_filename": "Carl_Sagan_Science_Communication_Wonder.png",
         "instructions": f"""
         You embody Carl Sagan, an astronomer and science communicator known for his sense of wonder and his ability to make science accessible and inspiring.
         Your tone is filled with awe for the cosmos, emphasizes skepticism and critical thinking ("extraordinary claims require extraordinary evidence"), and often connects topics to the "pale blue dot."
@@ -243,8 +261,9 @@ TUTOR_PERSONALITIES = {
         {BASE_SOCRATIC_PRINCIPLES}
         """
     },
-    "Albert Einstein (Physics & Imagination)": { # Using the one from Innovators
+    "Albert Einstein (Physics & Imagination)": {
         "category": "Innovators & Visionary Thinkers",
+        "image_filename": "Albert_Einstein_Physics_Imagination.png",
         "instructions": f"""
         You embody Albert Einstein, a deeply curious and imaginative physicist.
         Your language should be thoughtful, sometimes sprinkled with wonder about the universe.
@@ -255,8 +274,10 @@ TUTOR_PERSONALITIES = {
         {BASE_SOCRATIC_PRINCIPLES}
         """
     },
+    # ***** CORRECTED MARIE CURIE KEY HERE *****
     "Marie Curie (Experimental Physics & Perseverance)": {
         "category": "Innovators & Visionary Thinkers",
+        "image_filename": "Marie_Curie_Experimental_Physics_Perseverance.png", # Make sure you have this image
         "instructions": f"""
         You embody Marie Curie, a pioneering scientist known for her groundbreaking research on radioactivity and her immense perseverance in the face of adversity.
         Your tone is meticulous, dedicated, and emphasizes the crucial importance of careful observation and repeatable experimental evidence.
@@ -278,7 +299,13 @@ class SocraticTutor:
         self.chain = self._initialize_chain()
 
     def _get_system_prompt_for_personality(self) -> str:
-        return TUTOR_PERSONALITIES[self.personality_name]["instructions"]
+        # Ensure the personality exists before trying to access its instructions
+        if self.personality_name in TUTOR_PERSONALITIES:
+            return TUTOR_PERSONALITIES[self.personality_name]["instructions"]
+        else: # Should not happen if __init__ defaults correctly, but good for safety
+            print(f"Error: Could not find instructions for {self.personality_name}. Using default.")
+            return TUTOR_PERSONALITIES["MentorMind (Socratic Default)"]["instructions"]
+
 
     def _initialize_chain(self):
         load_dotenv()
@@ -290,10 +317,10 @@ class SocraticTutor:
 
         try:
             genai.configure(api_key=google_api_key)
+            # print("Google Generative AI SDK configured successfully.") # Less noisy for app
         except Exception as e:
-            # It's good practice to print this, but the app should also handle None return
-            # print(f"ERROR configuring Google Generative AI SDK: {e}") # Already handled by caller potentially
-            pass # Let the None return signify failure
+            print(f"ERROR configuring Google Generative AI SDK: {e}")
+            return None
 
         try:
             llm = ChatGoogleGenerativeAI(
@@ -301,7 +328,7 @@ class SocraticTutor:
                 temperature=LLM_TEMPERATURE,
             )
         except Exception as e:
-            print(f"ERROR initializing ChatGoogleGenerativeAI: {e}")
+            print(f"ERROR initializing ChatGoogleGenerativeAI with model {LLM_MODEL_NAME}: {e}")
             return None
 
         system_prompt_str = self._get_system_prompt_for_personality()
@@ -330,18 +357,18 @@ class SocraticTutor:
             response = self.chain.predict(input=user_input)
             return response
         except Exception as e:
-            print(f"Error during tutor_chain.predict with {self.personality_name}: {e}") # Log the error
+            print(f"Error during tutor_chain.predict with {self.personality_name}: {e}")
             return f"Sorry, an unexpected error occurred with the {self.personality_name} tutor. Please try again or select a different tutor."
 
     def get_current_personality_name(self) -> str:
         return self.personality_name
 
     def get_llm_model_name(self) -> str:
-        if self.chain and hasattr(self.chain.llm, 'model'):
+        if self.chain and self.chain.llm and hasattr(self.chain.llm, 'model'): # Check llm exists
             return self.chain.llm.model
-        elif self.chain and hasattr(self.chain.llm, 'model_name'): # Fallback
+        elif self.chain and self.chain.llm and hasattr(self.chain.llm, 'model_name'):
             return self.chain.llm.model_name
-        return LLM_MODEL_NAME # Fallback to the configured model name
+        return LLM_MODEL_NAME # Fallback
 
 def get_available_personalities() -> dict:
     """Returns a dictionary of available personalities."""
@@ -357,7 +384,6 @@ if __name__ == "__main__":
     
     available_personalities = get_available_personalities()
     print("\nAvailable Personalities:")
-    # Group by category for display
     categories = {}
     for name, details in available_personalities.items():
         cat = details.get("category", "Uncategorized")
@@ -366,24 +392,24 @@ if __name__ == "__main__":
         categories[cat].append(name)
     
     idx = 1
-    display_map = {}
-    for category, names in sorted(categories.items()):
-        print(f"\n--- {category} ---")
-        for name in sorted(names):
+    display_map = {} # For mapping number choice to name
+    for category_name, personality_name_list in sorted(categories.items()):
+        print(f"\n--- {category_name} ---")
+        for name in sorted(personality_name_list): # Sort names within category
             print(f"{idx}. {name}")
             display_map[str(idx)] = name
             idx += 1
     
     while True:
         try:
-            choice = input(f"\nChoose a tutor personality by number (1-{idx-1}) or type its full name (or 'quit'): ")
+            choice = input(f"\nChoose a tutor personality by number (1-{idx-1}) or type its full name (or 'quit' to exit): ")
             if choice.lower() == 'quit':
                 break
             
             selected_tutor_name = None
-            if choice in display_map:
+            if choice in display_map: # Check if choice is a number corresponding to an entry
                 selected_tutor_name = display_map[choice]
-            elif choice in available_personalities: # Allow typing full name
+            elif choice in available_personalities: # Check if choice is a full name
                 selected_tutor_name = choice
             else:
                 print("Invalid choice. Please try again.")
@@ -393,7 +419,7 @@ if __name__ == "__main__":
             tutor = get_tutor_instance(selected_tutor_name)
 
             if tutor.chain:
-                print(f"\nTutor {tutor.get_current_personality_name()} initialized. Ask a question or type 'quit' to change personality or exit this session.")
+                print(f"\nTutor {tutor.get_current_personality_name()} initialized. Ask a question or type 'quit' to end session with this tutor.")
                 while True:
                     test_input = input("You: ")
                     if test_input.lower() == 'quit':
@@ -403,13 +429,14 @@ if __name__ == "__main__":
             else:
                 print(f"Failed to initialize tutor: {selected_tutor_name}. Check API key and logs.")
             
-            continue_overall = input("\nChange personality or quit entirely? (type 'quit' to exit, anything else to choose again): ")
-            if continue_overall.lower() == 'quit':
+            continue_overall_choice = input("\nChange personality or quit entirely? (type 'quit' to exit, anything else to choose again): ")
+            if continue_overall_choice.lower() == 'quit':
                 break
         
-        except ValueError:
-            print("Invalid input for personality choice.")
+        except ValueError: # If int(choice) fails for some reason not caught by display_map
+            print("Invalid input format for personality choice.")
         except Exception as e:
             print(f"An unexpected error occurred in the main test loop: {e}")
+            # Optionally, re-raise for debugging if needed: raise
 
     print("Exiting tutor test.")
