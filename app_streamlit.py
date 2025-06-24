@@ -1,53 +1,82 @@
 # app_streamlit.py
 import streamlit as st
-from tutor_logic import SocraticTutor # Import the tutor class
+# Import WITHOUT TUTOR_LLM_MODEL
+from tutor_logic import get_tutor_instance, get_available_personalities, LLM_MODEL_NAME
 
 # --- Page Configuration ---
-st.set_page_config(page_title="MentorMind - AI Socratic Tutor (Streamlit)", page_icon="🎓")
+st.set_page_config(page_title="MentorMind - AI Socratic Tutor", page_icon="🎓", layout="wide")
 
-# --- Caching the Tutor Instance ---
-@st.cache_resource # Cache the SocraticTutor instance
-def get_cached_tutor():
-    """Gets a cached SocraticTutor instance."""
-    tutor = SocraticTutor()
-    if not tutor.chain: # Check if initialization failed within SocraticTutor
-        st.error("Failed to initialize the Socratic Tutor. Please check logs/console for API key issues or other errors.")
+st.title("🎓 MentorMind - AI Socratic Tutor")
+
+# --- Personality Selection ---
+available_personalities_dict = get_available_personalities()
+personality_names = list(available_personalities_dict.keys())
+
+if "selected_personality" not in st.session_state:
+    st.session_state.selected_personality = personality_names[0]
+
+st.sidebar.header("Choose Your Tutor:")
+current_selection_index = personality_names.index(st.session_state.selected_personality)
+
+newly_selected_personality_name = st.sidebar.selectbox(
+    "Select a Tutor Personality:",
+    options=personality_names,
+    index=current_selection_index,
+    key="personality_selectbox_widget"
+)
+
+# --- Caching the Tutor Instance based on personality ---
+@st.cache_resource
+def get_cached_tutor_streamlit(personality_name_for_cache: str):
+    print(f"Streamlit: Initializing/getting cached tutor for: {personality_name_for_cache}")
+    tutor = get_tutor_instance(personality_name=personality_name_for_cache)
+    if not tutor or not tutor.chain:
+        st.error(f"Failed to initialize Socratic Tutor for personality: {personality_name_for_cache}. Check server logs for API key or other errors.")
         return None
     return tutor
 
-# --- Streamlit App UI ---
-st.title("🎓 MentorMind - AI Socratic Tutor")
-st.caption(f"Powered by Langchain & Google Gemini ({SocraticTutor().chain.llm.model if SocraticTutor().chain and SocraticTutor().chain.llm else 'Model Unknown'})") # Display model if accessible
+# --- UI Updates based on selected tutor ---
+active_tutor = get_cached_tutor_streamlit(newly_selected_personality_name)
 
-# Initialize or get the tutor session from cache
-tutor = get_cached_tutor()
-
-if tutor is None:
-    st.warning("Tutor could not be initialized. Please check the console for error messages (e.g., API key).")
+if active_tutor:
+    # Get the model name directly from the active tutor instance
+    model_name_display = active_tutor.get_llm_model_name()
+    st.caption(f"Guiding you as: **{active_tutor.get_current_personality_name()}** (Model: {model_name_display})")
 else:
-    # Initialize chat history in session state if it doesn't exist
-    if "streamlit_messages" not in st.session_state: # Use a unique key for streamlit messages
+    # If tutor fails to initialize, use the LLM_MODEL_NAME imported from tutor_logic for the caption
+    # This LLM_MODEL_NAME is the one tutor_logic *attempts* to use.
+    st.caption(f"Guiding you as: **{newly_selected_personality_name}** (Model: {LLM_MODEL_NAME}) - Tutor Not Initialized")
+
+
+# --- Handle Personality Change & Chat History Reset ---
+if st.session_state.selected_personality != newly_selected_personality_name:
+    st.session_state.selected_personality = newly_selected_personality_name
+    st.session_state.streamlit_messages = [
+        {"role": "assistant", "content": f"Hello! I am now {st.session_state.selected_personality}. How can I guide your learning today?"}
+    ]
+    st.rerun()
+
+
+# --- Chat Interface ---
+if active_tutor is None:
+    st.error("Tutor could not be initialized. Please check the console/server logs for error messages (e.g., API key setup in .env).")
+else:
+    if "streamlit_messages" not in st.session_state:
         st.session_state.streamlit_messages = [
-            {"role": "assistant", "content": "Hello! I'm MentorMind. What would you like to learn or solve today?"}
+            {"role": "assistant", "content": f"Hello! I'm {active_tutor.get_current_personality_name()}. What would you like to learn or solve today?"}
         ]
 
-    # Display chat messages from history
     for message in st.session_state.streamlit_messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-    # Get user input
-    if user_prompt := st.chat_input("Ask MentorMind..."):
-        # Add user message to chat history
+    if user_prompt := st.chat_input(f"Ask {st.session_state.selected_personality}..."):
         st.session_state.streamlit_messages.append({"role": "user", "content": user_prompt})
-        # Display user message
         with st.chat_message("user"):
             st.markdown(user_prompt)
 
-        # Get assistant response
         with st.chat_message("assistant"):
-            with st.spinner("MentorMind is thinking..."):
-                response = tutor.get_response(user_prompt) # Use the get_response method
+            with st.spinner(f"{st.session_state.selected_personality} is thinking..."):
+                response = active_tutor.get_response(user_prompt)
                 st.markdown(response)
-                # Add assistant response to chat history
                 st.session_state.streamlit_messages.append({"role": "assistant", "content": response})
