@@ -1,4 +1,4 @@
-# app_streamlit.py
+# app_streamlit.py(with 2.0 gemini but bad UI)
 import streamlit as st
 import os
 from tutor_logic import get_tutor_instance, get_available_personalities, LLM_MODEL_NAME
