@@ -1,5 +1,5 @@
 
-# MentorMind 🧠 — AI Socratic Tutor(still updating)
+# MentorMind 🧠 — AI Socratic Tutor(still updating for now we have gemini 2.0 and have to improve UI aswell)
 
 MentorMind is an interactive AI-powered tutor designed to guide learners through reflective thinking using Socratic-style questioning. Powered by Streamlit and Gemini 2.0, it encourages users to understand concepts through meaningful conversation — not just passive answers.
 
