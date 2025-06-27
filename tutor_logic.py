@@ -22,9 +22,10 @@ from langchain_core.documents import Document # Langchain >= 0.1.0
 
 
 # --- Configuration ---
-LLM_MODEL_NAME = "models/gemini-1.5-flash-latest"
-LLM_TEMPERATURE = 0.65
-EMBEDDING_MODEL_NAME = "models/embedding-001"
+LLM_MODEL_NAME = "models/gemini-2.0-flash"        # Latest fast Gemini model as of 2025
+LLM_TEMPERATURE = 0.6                             # Balanced creativity and coherence
+EMBEDDING_MODEL_NAME = "models/embedding-001"     # Latest available embedding model (still current)
+
 
 # --- Base Socratic Principles ---
 BASE_SOCRATIC_PRINCIPLES = """
