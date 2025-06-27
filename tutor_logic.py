@@ -1,4 +1,4 @@
-# tutor_logic.py
+# tutor_logic.py(gemini 2.0)
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
