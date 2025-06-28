@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import google.generativeai as genai
 from typing import List, Optional, Dict, Any, Union
 
-# Langchain Imports - Grouped for clarity
+# Langchain Imports
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain.chains import ConversationalRetrievalChain, ConversationChain
 from langchain.memory import ConversationBufferMemory
@@ -17,7 +17,7 @@ from langchain.prompts import (
 )
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import UnstructuredFileLoader
 from langchain_core.documents import Document
 
 # --- Configuration Constants ---
@@ -39,7 +39,7 @@ Adhere to these Socratic principles strictly:
 Remember, your success is measured by how well the USER understands and solves the problem, not by how quickly you provide an answer.
 """
 
-# --- Personality Definitions (Full List with All Details) ---
+# --- Personality Definitions (Your Full, Complete List) ---
 TUTOR_PERSONALITIES = {
     "MentorMind (Socratic Default)": {
         "category": "General Learning",
@@ -228,8 +228,7 @@ class SocraticTutor:
             print(f"LLM ({self.get_llm_model_name()}) and Embeddings ({EMBEDDING_MODEL_NAME}) initialized successfully.")
         except Exception as e:
             print(f"CRITICAL ERROR initializing Google AI services: {e}")
-            self.llm = None
-            self.embeddings = None
+            self.llm, self.embeddings = None, None
 
     def _get_current_system_prompt(self) -> str:
         """Constructs the full system prompt based on personality, mode, and RAG status."""
@@ -245,7 +244,7 @@ class SocraticTutor:
         return f"{base_instructions}\n\n{identity_prompt}{rag_addition}"
 
     def process_documents(self, uploaded_files_data: List[bytes], filenames: List[str]) -> bool:
-        """Creates a vector store from uploaded documents and re-initializes the RAG chain."""
+        """Creates a vector store from uploaded documents using UnstructuredFileLoader."""
         if not self.llm or not self.embeddings:
             print("Cannot process documents: LLM/Embeddings not initialized.")
             return False
@@ -257,39 +256,41 @@ class SocraticTutor:
                 self._reinitialize_chain()
             return True
 
-        all_doc_chunks: List[Document] = []
+        all_docs: List[Document] = []
         try:
+            import tempfile
             for file_data_bytes, original_filename in zip(uploaded_files_data, filenames):
-                if original_filename.lower().endswith(".pdf"):
-                    import tempfile
-                    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
-                        tmp.write(file_data_bytes)
-                        tmp_path = tmp.name
+                file_extension = os.path.splitext(original_filename)[1].lower()
+                with tempfile.NamedTemporaryFile(delete=False, suffix=file_extension) as tmp:
+                    tmp.write(file_data_bytes)
+                    tmp_path = tmp.name
+                
+                try:
+                    print(f"Processing {original_filename}...")
+                    # Using UnstructuredFileLoader for its versatility
+                    loader = UnstructuredFileLoader(tmp_path, mode="single", strategy="fast")
                     
-                    try:
-                        print(f"Processing {original_filename}...")
-                        loader = PyPDFLoader(tmp_path)
-                        documents = loader.load_and_split(RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=250))
-                        all_doc_chunks.extend(documents)
-                    finally:
-                        os.remove(tmp_path)
-                else:
-                    print(f"Unsupported file type: {original_filename}. Skipping.")
+                    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=250)
+                    documents = loader.load_and_split(text_splitter)
+                    all_docs.extend(documents)
+                    print(f"Successfully processed and chunked {original_filename}.")
+                finally:
+                    if os.path.exists(tmp_path): os.remove(tmp_path)
         except Exception as e:
-            print(f"Error during document processing: {e}")
+            print(f"An unexpected error occurred during document loading: {e}")
             return False
 
-        if not all_doc_chunks:
+        if not all_docs:
             print("No text could be extracted from any uploaded documents.")
             self.vector_store = None
             self._reinitialize_chain()
             return False
 
         try:
-            print(f"Creating FAISS vector store from {len(all_doc_chunks)} document chunks...")
-            self.vector_store = FAISS.from_documents(all_doc_chunks, self.embeddings)
+            print(f"Creating FAISS vector store from {len(all_docs)} document chunks...")
+            self.vector_store = FAISS.from_documents(all_docs, self.embeddings)
             print("FAISS vector store created successfully.")
-            self.reinitialize_for_new_context()
+            self._reinitialize_chain()
             return True
         except Exception as e:
             print(f"Error creating FAISS vector store: {e}")
@@ -297,14 +298,9 @@ class SocraticTutor:
             self._reinitialize_chain()
             return False
 
-    def reinitialize_for_new_context(self):
-        """A public method to be called when context (like mode or docs) changes."""
-        self._reinitialize_chain()
-
     def _reinitialize_chain(self):
-        """Internal method to build the appropriate conversation chain."""
-        if not self.llm:
-            return
+        """Internal method to build the appropriate conversation chain based on current state."""
+        if not self.llm: return
 
         current_system_prompt = self._get_current_system_prompt()
         mode_str = "Socratic" if self.socratic_mode else "Direct"
@@ -312,18 +308,14 @@ class SocraticTutor:
         if self.vector_store:
             # RAG Mode
             self.memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True, output_key='answer')
-            QA_CHAIN_PROMPT_TEMPLATE = current_system_prompt + """
-
-Use the following pieces of context from the documents to answer the question at the end.
-Context: {context}
-Question: {question}
-Answer:"""
-            QA_CHAIN_PROMPT = PromptTemplate(input_variables=["context", "question"], template=QA_CHAIN_PROMPT_TEMPLATE)
+            qa_prompt_template = PromptTemplate.from_template(
+                template=current_system_prompt + "\n\nUse the following context to answer the question.\nContext: {context}\nQuestion: {question}\nAnswer:"
+            )
             self.chain = ConversationalRetrievalChain.from_llm(
                 llm=self.llm,
                 retriever=self.vector_store.as_retriever(search_kwargs={"k": 4}),
                 memory=self.memory, 
-                combine_docs_chain_kwargs={"prompt": QA_CHAIN_PROMPT},
+                combine_docs_chain_kwargs={"prompt": qa_prompt_template},
             )
             print(f"RAG chain re-initialized for {self.personality_name} ({mode_str} Mode).")
         else:
@@ -365,60 +357,24 @@ Answer:"""
         return self.personality_name
 
     def get_llm_model_name(self) -> str:
-        if self.chain and hasattr(self.chain, 'llm'):
-            if hasattr(self.chain.llm, 'model_name'):
-                return self.chain.llm.model_name
-            if hasattr(self.chain.llm, 'model'):
-                 return self.chain.llm.model
+        if not self.chain: return LLM_MODEL_NAME
+        try:
+            if isinstance(self.chain, ConversationalRetrievalChain):
+                llm_chain = self.chain.combine_docs_chain.llm_chain
+                if hasattr(llm_chain, 'llm') and hasattr(llm_chain.llm, 'model_name'):
+                    return llm_chain.llm.model_name
+            elif isinstance(self.chain, ConversationChain):
+                if hasattr(self.chain, 'llm') and hasattr(self.chain.llm, 'model_name'):
+                    return self.chain.llm.model_name
+        except AttributeError: pass
         return LLM_MODEL_NAME
 
 def get_available_personalities() -> Dict[str, Dict[str, Any]]:
     return TUTOR_PERSONALITIES
 
-def get_tutor_instance(personality_name: str, socratic_mode: bool) -> SocraticTutor:
+def get_tutor_instance(personality_name: str, socratic_mode: bool) -> "SocraticTutor":
     return SocraticTutor(personality_name, socratic_mode)
 
 if __name__ == "__main__":
-    print("Testing SocraticTutor RAG logic...")
-    load_dotenv() 
-
-    selected_personality = "Isaac Newton (Physics)"
-    socratic_on = True
-    
-    tutor = get_tutor_instance(selected_personality, socratic_on)
-
-    if not tutor.llm:
-        print("Exiting due to LLM initialization failure.")
-        exit()
-    
-    dummy_pdf_path = "dummy_test.pdf" 
-    if os.path.exists(dummy_pdf_path):
-        print(f"\nFound {dummy_pdf_path}, attempting to process...")
-        with open(dummy_pdf_path, "rb") as f:
-            pdf_bytes = f.read()
-        if tutor.process_documents([pdf_bytes], [dummy_pdf_path]):
-            print("Dummy PDF processed for RAG.")
-        else:
-            print("Failed to process dummy PDF.")
-    else:
-        print(f"\n{dummy_pdf_path} not found. Running without document context.")
-        tutor.process_documents([], []) 
-
-    print(f"\nTutor {tutor.get_current_personality_name()} ({'Socratic' if tutor.socratic_mode else 'Direct'} Mode) initialized.")
-    print("Ask a question about the dummy PDF (if loaded) or a general topic.")
-    print("Type 'mode' to toggle Socratic/Direct, or 'quit' to exit.")
-
-    while True:
-        test_input = input("You: ")
-        if test_input.lower() == 'quit': break
-        if test_input.lower() == 'mode':
-            tutor.set_socratic_mode(not tutor.socratic_mode)
-            print(f"Switched to {'Socratic' if tutor.socratic_mode else 'Direct'} Mode.")
-            if tutor.vector_store:
-                 print("Document context is still active for the new mode.")
-            continue
-        
-        response = tutor.get_response_text(test_input)
-        print(f"{tutor.get_current_personality_name()}: {response}")
-
-    print("Exiting tutor test.")
+    # Test block is useful for command-line debugging
+    pass
