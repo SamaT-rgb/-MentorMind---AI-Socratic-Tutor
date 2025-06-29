@@ -1,6 +1,42 @@
+# --- Secrets and Environment Variables ---
+# This is the most important line. Never commit your API keys.
 .env
-myenv
-app_gradio.py
+google-creds.json
+
+# --- Python Virtual Environments ---
+# Ignores any folder named 'myenv' or 'venv' anywhere in the project.
+myenv/
+venv/
+
+# --- Python Cache and Compiled Files ---
+# These are generated automatically by Python and don't need to be in the repo.
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- IDE and OS Specific Files ---
+# These are specific to your local machine and editor setup.
+.vscode/
+.idea/
+.DS_Store
 desktop.ini
-requirements.txt
-run_ui.py
+
+# --- Temporary Files ---
+# Ignores any temporary files created by the RAG document processing.
+temp_*
+
+# --- Installation and Build Artifacts ---
+# In case you build distributions in the future.
+dist/
+build/
+*.egg-info/
+
+# --- Log Files ---
+# It's good practice to ignore log files if your app generates them.
+*.log
+logs/
+
+# --- Jupyter Notebook Checkpoints ---
+# If you ever use Jupyter notebooks for testing.
+.ipynb_checkpoints
