@@ -4,7 +4,7 @@
 
 ![MentorMind UI Screenshot]([https'://i.imgur.com/your-screenshot-url.png'](https://drive.google.com/file/d/1S10eVmBNzu9_IUdmpfbbOJprMEKBar4O/view?usp=sharing)) 
 
-- **Project PDF:** [View a detailed presentation of the project's features and architecture.](https://raw.githubusercontent.com/SamaT-rgb/-MentorMind---AI-Socratic-Tutor/main/MentorMind%20-%20AI%20Socratic%20Tutor%20(Streamlit).pdf)
+
 
 ---
 
