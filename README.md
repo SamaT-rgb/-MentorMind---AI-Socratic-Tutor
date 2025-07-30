@@ -2,8 +2,8 @@
 
 **MentorMind is an advanced, interactive AI learning platform designed to guide users through complex topics using the Socratic method.** Instead of providing instant answers, MentorMind helps you think critically and discover solutions for yourself. Choose from over 20 iconic personalities—from Albert Einstein to Leonardo da Vinci—each with a unique teaching style, and even upload your own study materials for a truly personalized learning session.
 
-![MentorMind UI Screenshot](https'://i.imgur.com/your-screenshot-url.png') 
-*(**Action:** Replace this with a URL to a new screenshot of your polished app! You can upload a screenshot to a site like [Imgur](https://imgur.com/) to get a direct link.)*
+![MentorMind UI Screenshot]([https'://i.imgur.com/your-screenshot-url.png'](https://drive.google.com/file/d/1S10eVmBNzu9_IUdmpfbbOJprMEKBar4O/view?usp=sharing)) 
+
 
 ---
 
