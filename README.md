@@ -8,7 +8,8 @@ Instead of simply providing instant answers, MentorMind encourages critical thin
 Choose from **over 20 iconic personalities**—from Albert Einstein to Leonardo da Vinci—each with their own unique teaching style.  
 You can even upload your own study materials for a **fully personalized learning experience**.
 
-![MentorMind UI Screenshot](https://drive.google.com/uc?export=view&id=1S10eVmBNzu9_IUdmpfbbOJprMEKBar4O)
+![MentorMind UI Screenshot](https://raw.githubusercontent.com/SamaT-rgb/-MentorMind---AI-Socratic-Tutor/main/assets/mentormind-ui.png)
+
 
 
 
@@ -110,4 +111,5 @@ Your browser should automatically open to `http://localhost:8501`.
 ---
 
 Happy Learning! 🌟
+
 
