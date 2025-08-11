@@ -1,8 +1,14 @@
 # MentorMind 🎓 — Your Personal AI Socratic Tutor
 
-**MentorMind is an advanced, interactive AI learning platform designed to guide users through complex topics using the Socratic method.** Instead of providing instant answers, MentorMind helps you think critically and discover solutions for yourself. Choose from over 20 iconic personalities—from Albert Einstein to Leonardo da Vinci—each with a unique teaching style, and even upload your own study materials for a truly personalized learning session.
+# MentorMind
 
-![MentorMind UI Screenshot]([https'://i.imgur.com/your-screenshot-url.png'](https://drive.google.com/file/d/1S10eVmBNzu9_IUdmpfbbOJprMEKBar4O/view?usp=sharing)) 
+**MentorMind** is an advanced, interactive AI learning platform that guides users through complex topics using the **Socratic method**.  
+Instead of simply providing instant answers, MentorMind encourages critical thinking and helps you discover solutions on your own.
+
+Choose from **over 20 iconic personalities**—from Albert Einstein to Leonardo da Vinci—each with their own unique teaching style.  
+You can even upload your own study materials for a **fully personalized learning experience**.
+
+![MentorMind UI Screenshot](https://drive.google.com/uc?export=view&id=1S10eVmBNzu9_IUdmpfbbOJprMEKBar4O)
 
 
 
@@ -104,3 +110,4 @@ Your browser should automatically open to `http://localhost:8501`.
 ---
 
 Happy Learning! 🌟
+
