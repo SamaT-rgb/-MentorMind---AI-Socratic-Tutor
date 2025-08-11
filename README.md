@@ -1,6 +1,6 @@
 # MentorMind 🎓 — Your Personal AI Socratic Tutor
 
-# MentorMind
+
 
 **MentorMind** is an advanced, interactive AI learning platform that guides users through complex topics using the **Socratic method**.  
 Instead of simply providing instant answers, MentorMind encourages critical thinking and helps you discover solutions on your own.
@@ -113,6 +113,7 @@ Your browser should automatically open to `http://localhost:8501`.
 ---
 
 Happy Learning! 🌟
+
 
 
 
